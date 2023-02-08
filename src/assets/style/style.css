@@ -1,0 +1,55 @@
+@import './variables.css';
+
+html {
+  font-size: 10px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  color: var(--primary);
+}
+input,
+button {
+  border: none;
+  outline: none;
+}
+.wrapper {
+  padding: 5rem 2rem;
+}
+.container {
+  max-width: 144rem;
+  margin: auto;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 767px) {
+  html {
+    font-size: 8px;
+  }
+  .wrapper {
+    padding: 2rem 1rem;
+  }
+  .container {
+    max-width: 100%;
+  }
+}
+@media (max-width: 375px) {
+  html {
+    font-size: 7px;
+  }
+}
+@media (max-width: 320px) {
+  html {
+    font-size: 6px;
+  }
+}
