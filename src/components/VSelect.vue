@@ -22,13 +22,22 @@
         @setQuery="submitMaxVal"
       />
     </div>
-    <div v-else class="v-select__block">
+    <div v-if="isLogin" class="v-select__block">
       <VInput
-        :value="queryParams.query"
+        :value="queryParams.queryLogin"
         :placeholder="currentSelect"
         :type="'text'"
         class="v-select__input"
-        @setQuery="submitQuery"
+        @setQuery="submitQueryLogin"
+      />
+    </div>
+    <div v-if="isStatus" class="v-select__block">
+      <VInput
+        :value="queryParams.queryStatus"
+        :placeholder="currentSelect"
+        :type="'text'"
+        class="v-select__input"
+        @setQuery="submitQueryStatus"
       />
     </div>
     <VButton
@@ -58,17 +67,33 @@ export default {
     isRange() {
       return this.currentSelect === 'orders';
     },
+    isLogin() {
+      return this.currentSelect === 'login';
+    },
+    isStatus() {
+      return this.currentSelect === 'status';
+    },
   },
   methods: {
     ...mapMutations([
       'SET_ORDERS_MIN',
       'SET_ORDERS_MAX',
       'SET_SEARCH_QUERY',
+      'SET_SEARCH_QUERY_LOGIN',
+      'SET_SEARCH_QUERY_STATUS',
       'SET_CURRENT_SELECT',
       'SET_INIT_QUERY',
     ]),
     submitQuery(val) {
       this.$store.commit('SET_SEARCH_QUERY', val.toLowerCase());
+      setRouteParams(this.queryParams);
+    },
+    submitQueryLogin(val) {
+      this.$store.commit('SET_SEARCH_QUERY_LOGIN', val.toLowerCase());
+      setRouteParams(this.queryParams);
+    },
+    submitQueryStatus(val) {
+      this.$store.commit('SET_SEARCH_QUERY_STATUS', val.toLowerCase());
       setRouteParams(this.queryParams);
     },
     submitMinVal(val) {
@@ -80,9 +105,8 @@ export default {
       setRouteParams(this.queryParams);
     },
     selectOption(option) {
-      this.$store.commit('SET_INIT_QUERY');
-      this.$router.push({}).catch(() => {});
       this.$store.commit('SET_CURRENT_SELECT', option);
+      setRouteParams(this.queryParams);
     },
     clearFilters() {
       this.$store.commit('SET_INIT_QUERY');

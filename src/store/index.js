@@ -51,14 +51,16 @@ export default new Vuex.Store({
       { name: 'Статус', value: 'status' },
     ],
     initQuery: {
-      searchQuery: '',
+      searchQueryLogin: '',
+      searchQueryStatus: '',
       currentSelect: 'login',
       ordersMin: null,
       ordersMax: null,
       currentSort: '',
       currentSortDir: 'asc',
     },
-    searchQuery: '',
+    searchQueryLogin: '',
+    searchQueryStatus: '',
     currentSelect: 'login',
     ordersMin: null,
     ordersMax: null,
@@ -67,8 +69,20 @@ export default new Vuex.Store({
   },
   getters: {
     filteredRows(state) {
-      return [...state.rows].filter((item) => {
-        if (state.currentSelect === 'orders') {
+      return [...state.rows]
+        .filter((item) => {
+          if (state.searchQueryLogin) {
+            return item.login.toLowerCase().includes(state.searchQueryLogin);
+          }
+          return state.rows;
+        })
+        .filter((item) => {
+          if (state.searchQueryStatus) {
+            return item.status.toLowerCase().includes(state.searchQueryStatus);
+          }
+          return state.rows;
+        })
+        .filter((item) => {
           if (state.ordersMin && !state.ordersMax) {
             return Number(item.orders) >= Number(state.ordersMin);
           }
@@ -81,15 +95,8 @@ export default new Vuex.Store({
               Number(item.orders) <= Number(state.ordersMax)
             );
           }
-        } else {
-          if (state.searchQuery) {
-            return item[state.currentSelect]
-              .toLowerCase()
-              .includes(state.searchQuery);
-          }
-        }
-        return state.rows;
-      });
+          return state.rows;
+        });
     },
     sortedRows(state, getters) {
       return getters.filteredRows.sort((a, b) => {
@@ -112,10 +119,10 @@ export default new Vuex.Store({
       return {
         min: state.ordersMin,
         max: state.ordersMax,
-        query: state.searchQuery,
+        queryLogin: state.searchQueryLogin,
+        queryStatus: state.searchQueryStatus,
         dir: state.currentSortDir,
         sort: state.currentSort,
-        select: state.currentSelect,
       };
     },
   },
@@ -123,8 +130,11 @@ export default new Vuex.Store({
     SET_CURRENT_SELECT(state, payload) {
       state.currentSelect = payload;
     },
-    SET_SEARCH_QUERY(state, payload) {
-      state.searchQuery = payload;
+    SET_SEARCH_QUERY_LOGIN(state, payload) {
+      state.searchQueryLogin = payload;
+    },
+    SET_SEARCH_QUERY_STATUS(state, payload) {
+      state.searchQueryStatus = payload;
     },
     SET_ORDERS_MIN(state, payload) {
       state.ordersMin = payload;
@@ -139,7 +149,8 @@ export default new Vuex.Store({
       state.currentSortDir = payload;
     },
     SET_INIT_QUERY(state) {
-      state.searchQuery = state.initQuery.searchQuery;
+      state.searchQueryLogin = state.initQuery.searchQueryLogin;
+      state.searchQueryStatus = state.initQuery.searchQueryStatus;
       state.currentSelect = state.initQuery.currentSelect;
       state.ordersMin = state.initQuery.ordersMin;
       state.ordersMax = state.initQuery.ordersMax;

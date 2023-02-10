@@ -26,6 +26,8 @@ export default {
       'SET_CURRENT_SORT',
       'SET_CURRENT_SORT_DIR',
       'SET_SEARCH_QUERY',
+      'SET_SEARCH_QUERY_LOGIN',
+      'SET_SEARCH_QUERY_STATUS',
       'SET_CURRENT_SELECT',
     ]),
   },
@@ -55,10 +57,16 @@ export default {
         : this.initQuery.currentSortDir
     );
     this.$store.commit(
-      'SET_SEARCH_QUERY',
-      this.$route.query.query
-        ? this.$route.query.query
-        : this.initQuery.searchQuery
+      'SET_SEARCH_QUERY_LOGIN',
+      this.$route.query.queryLogin
+        ? this.$route.query.queryLogin
+        : this.initQuery.searchQueryLogin
+    );
+    this.$store.commit(
+      'SET_SEARCH_QUERY_STATUS',
+      this.$route.query.queryStatus
+        ? this.$route.query.queryStatus
+        : this.initQuery.searchQueryStatus
     );
     this.$store.commit(
       'SET_CURRENT_SELECT',

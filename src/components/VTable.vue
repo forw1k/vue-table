@@ -1,7 +1,7 @@
 <template>
   <table class="table">
     <thead>
-      <tr>
+      <tr class="table__row">
         <th
           v-for="header in headers"
           :key="header.value"
@@ -13,6 +13,7 @@
           @click="sort(header.value), setRouteParams(queryParams)"
         >
           {{ header.name }}
+          <img src="@/assets/icons/sort-arrow-top.svg" class="table__icon" />
         </th>
       </tr>
     </thead>
@@ -56,13 +57,28 @@ export default {
   border-collapse: collapse;
   border-spacing: 0;
 }
+.table__row {
+  vertical-align: top;
+}
 .table__title {
   background: var(--light-blue);
   color: var(--white);
   cursor: pointer;
+  .table__icon {
+    visibility: hidden;
+    vertical-align: middle;
+  }
 }
 .table__title.active {
   background: var(--dark-blue);
+  .table__icon {
+    visibility: visible;
+  }
+}
+.table__title.rotate {
+  .table__icon {
+    transform: rotate(180deg);
+  }
 }
 .table__cell:hover {
   transition: 0.2s;
